@@ -10,12 +10,9 @@ describe('CalculadoraComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CalculadoraComponent ],
-      providers: [
-        CalculadoraService
-      ]
-    })
-    .compileComponents();
+      declarations: [CalculadoraComponent],
+      providers: [CalculadoraService]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -24,16 +21,20 @@ describe('CalculadoraComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    component.limpar();
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
   it('deve garantir que 3 + 2 = 5', () => {
-    let btn3 = fixture.debugElement.query(By.css('#btn3'));
-    let btnSoma = fixture.debugElement.query(By.css('#btnSoma'));
-    let btn2 = fixture.debugElement.query(By.css('#btn2'));
-    let btnCalcular = fixture.debugElement.query(By.css('#btnCalcular'));
-    let display = fixture.debugElement.query(By.css('#display'));
+    const btn3 = fixture.debugElement.query(By.css('#btn3'));
+    const btnSoma = fixture.debugElement.query(By.css('#btnSoma'));
+    const btn2 = fixture.debugElement.query(By.css('#btn2'));
+    const btnCalcular = fixture.debugElement.query(By.css('#btnCalcular'));
+    const display = fixture.debugElement.query(By.css('#display'));
 
     btn3.triggerEventHandler('click', null);
     fixture.detectChanges();
@@ -43,11 +44,18 @@ describe('CalculadoraComponent', () => {
 
     btn2.triggerEventHandler('click', null);
     fixture.detectChanges();
-    
+
     btnCalcular.triggerEventHandler('click', null);
     fixture.detectChanges();
 
     expect(display.nativeElement.value).toEqual('5');
-  }); 
+  });
 
+  it('testando multiplicação', () => {
+    component.adicionarNumero('5');
+    component.definirOperacao('*');
+    component.adicionarNumero('3');
+    component.calcular();
+    expect(component.display).toEqual('15');
+  });
 });
